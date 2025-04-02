@@ -138,7 +138,7 @@ function App() {
       </header>
 
       <main className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 gap-4 py-6 max-w-7xl">
+        <div className="grid grid-cols-1 gap-4 py-6 sm:grid-cols-2">
           {towers.map((tower) => (
             <TowerGrid
               key={tower.id}

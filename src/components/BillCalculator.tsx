@@ -53,7 +53,7 @@ export function BillCalculator({ towers, onCalculate }: BillCalculatorProps) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 col-span-2">
+    <div className="bg-white rounded-lg shadow-md p-4 col-span-1 sm:col-span-2">
       <div className="flex items-center gap-2 mb-4 print:hidden">
         <Calculator className="w-5 h-5 text-blue-600" />
         <h2 className="text-xl font-semibold">Bill Calculator</h2>
