@@ -106,7 +106,7 @@ export function BillCalculator({ towers, onCalculate }: BillCalculatorProps) {
                           {calc.residents}
                         </td>
                         <td className="px-4 py-2 text-right">
-                          {calc.daysStayed}
+                          {calc.residents > 0 ? calc.daysStayed : 0}
                         </td>
                         <td className="px-4 py-2 text-right font-medium">
                           ₹{calc.share.toFixed(2)}
