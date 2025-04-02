@@ -87,25 +87,28 @@ export function BillCalculator({ towers, onCalculate }: BillCalculatorProps) {
                 Calculation Results
               </h3>
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full border border-gray-100">
                   <thead>
                     <tr className="bg-gray-50">
                       <th className="px-4 py-2 text-left">Home</th>
-                      <th className="px-4 py-2 text-right">Residents</th>
-                      <th className="px-4 py-2 text-right">Days</th>
+                      <th className="px-4 py-2 text-center">Residents</th>
+                      <th className="px-4 py-2 text-center">Days</th>
                       <th className="px-4 py-2 text-right">Share</th>
                     </tr>
                   </thead>
                   <tbody>
                     {calculations.map((calc, index) => (
-                      <tr key={index} className="hover:bg-gray-50">
+                      <tr
+                        key={index}
+                        className="hover:bg-gray-50 border border-gray-100"
+                      >
                         <td className="px-4 py-2">
                           {`T${calc.towerName}${calc.homeNumber}`}
                         </td>
-                        <td className="px-4 py-2 text-right">
+                        <td className="px-4 py-2 text-center">
                           {calc.residents}
                         </td>
-                        <td className="px-4 py-2 text-right">
+                        <td className="px-4 py-2 text-center">
                           {calc.residents > 0 ? calc.daysStayed : 0}
                         </td>
                         <td className="px-4 py-2 text-right font-medium">
