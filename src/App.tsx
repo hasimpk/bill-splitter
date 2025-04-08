@@ -100,7 +100,10 @@ function App() {
             ...story,
             homes: story.homes.map((home) => ({
               ...home,
-              daysStayed: selectedMonthData.days,
+              daysStayed:
+                home.daysStayed === 0
+                  ? selectedMonthData.days
+                  : home.daysStayed,
             })),
           })),
         }))

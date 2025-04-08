@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Calculator, IndianRupee, Printer } from "lucide-react";
 import type { Tower, BillCalculation } from "../types";
 
@@ -52,13 +52,22 @@ export function BillCalculator({ towers, onCalculate }: BillCalculatorProps) {
     window.print();
   };
 
+  // Group calculations by tower
+  const towerCalculations = towers.reduce<Record<string, BillCalculation[]>>(
+    (acc, tower) => {
+      acc[tower.id] = calculations.filter((calc) => calc.towerId === tower.id);
+      return acc;
+    },
+    {}
+  );
+
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 col-span-1 sm:col-span-2">
+    <div className="bg-white rounded-lg shadow-md p-4 col-span-1 sm:col-span-2 print:p-0 print:shadow-none">
       <div className="flex items-center gap-2 mb-4 print:hidden">
         <Calculator className="w-5 h-5 text-blue-600" />
         <h2 className="text-xl font-semibold">Bill Calculator</h2>
       </div>
-      <div className="space-y-4">
+      <div className="space-y-4 print:space-y-0">
         <div className="print:hidden">
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Total Water Bill Amount
@@ -81,43 +90,55 @@ export function BillCalculator({ towers, onCalculate }: BillCalculatorProps) {
           Calculate Shares
         </button>
         {calculations.length > 0 && (
-          <div className="space-y-4">
-            <div className="border-t pt-4">
+          <div className="space-y-4 print:space-y-0">
+            <div className="border-t pt-4 print:border-t-0 print:pt-4">
               <h3 className="font-medium mb-2 print:hidden">
                 Calculation Results
               </h3>
-              <div className="overflow-x-auto">
-                <table className="w-full border border-gray-100">
-                  <thead>
-                    <tr className="bg-gray-50">
-                      <th className="px-4 py-2 text-left">Home</th>
-                      <th className="px-4 py-2 text-center">Residents</th>
-                      <th className="px-4 py-2 text-center">Days</th>
-                      <th className="px-4 py-2 text-right">Share</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {calculations.map((calc, index) => (
-                      <tr
-                        key={index}
-                        className="hover:bg-gray-50 border border-gray-100"
-                      >
-                        <td className="px-4 py-2">
-                          {`T${calc.towerName}${calc.homeNumber}`}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {calc.residents}
-                        </td>
-                        <td className="px-4 py-2 text-center">
-                          {calc.residents > 0 ? calc.daysStayed : 0}
-                        </td>
-                        <td className="px-4 py-2 text-right font-medium">
-                          ₹{calc.share.toFixed(2)}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              <h3 className="font-medium mb-2 text-lg text-center print:flex hidden">
+                {`Total Amount: ${totalAmount}`}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 print:grid-cols-2 print:gap-4">
+                {towers.map((tower) => (
+                  <div
+                    key={tower.id}
+                    className="border rounded-lg overflow-hidden"
+                  >
+                    <div className="overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-gray-50">
+                            <th className="px-4 py-2 text-left">Home</th>
+                            <th className="px-4 py-2 text-center">Residents</th>
+                            <th className="px-4 py-2 text-center">Days</th>
+                            <th className="px-4 py-2 text-right">Share</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {towerCalculations[tower.id]?.map((calc, index) => (
+                            <tr
+                              key={index}
+                              className="hover:bg-gray-50 border-t border-gray-100"
+                            >
+                              <td className="px-4 py-2">
+                                {`T${tower.name}${calc.homeNumber}`}
+                              </td>
+                              <td className="px-4 py-2 text-center">
+                                {calc.residents}
+                              </td>
+                              <td className="px-4 py-2 text-center">
+                                {calc.residents > 0 ? calc.daysStayed : 0}
+                              </td>
+                              <td className="px-4 py-2 text-right font-medium">
+                                ₹{calc.share.toFixed(2)}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
             <button
